@@ -15,7 +15,7 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=100)
     content = models.TextField()
     category = models.ManyToManyField(Category, related_name='posts')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -44,3 +44,6 @@ class Comment(models.Model):
         for user in self.likedBy.all():
             users.append(user.username)
         return users
+
+    def get_username(self):
+        return self.author

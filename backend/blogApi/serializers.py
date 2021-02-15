@@ -7,7 +7,7 @@ from rest_framework import serializers
 class CategorySerializer(FlexFieldsModelSerializer):
     class Meta:
         model = Category
-        fields = ['pk', 'name']
+        fields = ['name']
         expandable_fields = {
             'posts': ('blogApi.PostSerializer', {'many': True})
         }
@@ -16,7 +16,7 @@ class CategorySerializer(FlexFieldsModelSerializer):
 class UserSerializer(FlexFieldsModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username']
+        fields = ['pk', 'username', 'first_name', 'last_name', 'email']
 
 
 class LikedBySerializer(FlexFieldsModelSerializer):
@@ -25,15 +25,10 @@ class LikedBySerializer(FlexFieldsModelSerializer):
         fields = ['username']
 
 
-class PostSerializer(FlexFieldsModelSerializer):
+class PostCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ('title', 'content', 'author', 'category', 'likedBy')
-        expandable_fields = {
-            'category': ('blogApi.CategorySerializer', {'many': True}),
-            'comments': ('blogApi.CommentSerializer', {'many': True}),
-            'likedBy': ('blogApi.LikedBySerializer', {'many': True}),
-        }
+        fields = ('title', 'content', 'category',)
 
     def create(self, validated_data):
         user = self.context['request'].user
@@ -46,12 +41,56 @@ class PostSerializer(FlexFieldsModelSerializer):
             raise serializers.ValidationError(
                 {"authorize": "You are not superuser!"})
 
+
+properties = ['title', 'content', 'category', 'likedBy']
+
+
+class PostLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'likedBy']
+
+    def update(self, instance, validated_data):
+        user = self.context['request'].user
+        instance.likedBy.add(user.pk)
+        instance.save()
+        return instance
+
+
+class PostUnlikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'likedBy']
+
+    def update(self, instance, validated_data):
+        user = self.context['request'].user
+        instance.likedBy.remove(user.pk)
+        instance.save()
+        return instance
+
+
+class PostSerializer(FlexFieldsModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('title', 'content', 'author',
+                  'category', 'created', 'likedBy', 'pk')
+        expandable_fields = {
+            'category': ('blogApi.CategorySerializer', {'many': True}),
+            'comments': ('blogApi.CommentSerializer', {'many': True}),
+            'likedBy': ('blogApi.LikedBySerializer', {'many': True}),
+            'author': ('blogApi.UserSerializer', {'many': False})
+        }
+
     def update(self, instance, validated_data):
         user = self.context['request'].user
         if user.is_superuser:
-            instance.category.set(validated_data['category'])
-            instance.title = validated_data['title']
-            instance.content = validated_data['content']
+            for k in validated_data:
+                if 'title' == k:
+                    instance.title = validated_data['title']
+                elif 'content' == k:
+                    instance.content = validated_data['content']
+                elif 'category' == k:
+                    instance.category.set(validated_data['category'])
             instance.save()
             return instance
         else:
@@ -69,12 +108,13 @@ class PostSerializer(FlexFieldsModelSerializer):
 
 class CommentSerializer(FlexFieldsModelSerializer):
     liked_by = serializers.ListField(source='get_comment_likes')
+    username = serializers.CharField(source='get_username')
 
     class Meta:
         model = Comment
-        fields = ['content', 'liked_by']
+        fields = ['pk', 'created', 'content', 'liked_by', 'author', 'username']
         read_only_fields = (
-            'liked_by',
+            'username',
         )
 
 

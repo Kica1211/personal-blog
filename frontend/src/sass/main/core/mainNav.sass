@@ -1,0 +1,81 @@
+nav#mainNav
+    position: fixed
+    top: 0
+    left: 0
+    height: 80px
+    z-index: 5
+    width: 70%
+    background-color: #C3FFFC
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 0px 15%
+    letter-spacing: 2px
+    font-size: 25px
+    div.nav-menu
+        display: none
+    a
+        text-decoration: none
+        color: black
+    div.nav-links-wrapper
+        display: flex
+        font-size: 22px
+        a
+            div.nav-link
+                margin-right: 10px
+                padding: 5px 20px
+                transition: all 0.25s
+                border-radius: 25px
+                &:hover
+                    background-color: rgba(29, 161, 242,0.15)
+                    transform: scale(1.05,1.05)
+@media screen and ( max-width: 1200px )
+    nav#mainNav
+        width: 82.5%
+        font-size: 22px
+        padding-right: 2.5%
+        div.nav-links-wrapper
+            font-size: 20px
+            margin-right: 5px
+@media screen and ( max-width: 1000px )
+    nav#mainNav
+        width: 90%
+        padding-left: 10%
+        padding-right: 0
+@media screen and ( max-width: 850px )
+    nav#mainNav
+        padding: 0
+        width: 100%
+        justify-content: center
+        div.logo
+            font-size: 26px
+            z-index: 10
+            background-color: #C3FFFC
+            width: 100vw
+            text-align: center
+            height: 80px
+            line-height: 80px
+        div.nav-links-wrapper
+            position: absolute
+            top: -500%
+            left: 50%
+            z-index: -1
+            transition: top 1s linear
+            transform: translateX(-50%)
+            flex-direction: column
+            background-color: #CFE6FF
+            width: 100%
+            a
+                div.nav-link
+                    text-align: center
+                    margin: 5px 0px
+        div.active
+            top: 100%
+        div.nav-menu
+            z-index: 1000
+            font-size: 15px
+            display: block
+            top: 50%
+            right: 5%
+            transform: translateY(-50%)
+            position: absolute

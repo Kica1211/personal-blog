@@ -1,0 +1,55 @@
+div.homeSinglePost
+    background-color: white
+    margin-bottom: 20px
+    padding: 10px
+    border-top: 1px solid grey
+    border-bottom: 1px solid grey
+    transition: background-color 0.15s linear
+    &:first-of-type
+        border-top: none
+        &:hover
+            cursor: pointer
+            background-color: rgba(0,0 ,0 ,0.01 )
+    a
+        text-decoration: none
+        color: black
+        &:first-of-type
+            border-top: none
+    div.author-date
+        font-size: 14px
+        color: #555
+        display: flex
+        align-items: flex-end
+        div.author
+            font-size: 16px
+            color: #222
+            font-weight: bold
+            margin-right: 5px
+    div.post-title
+        font-size: 26px
+        color: #444
+        font-weight: 600
+    div.post-content
+        font-size: 16px
+        line-height: 2
+        span.read-more
+            margin-left: 5px
+            padding: 5px 10px 10px 10px
+            border-radius: 5px
+            text-decoration: underline
+            color: #555
+            &:hover
+                background-color: #CFD1D0
+    div.rating-section
+        display: flex
+        font-size: 14px
+        div.rating-item
+            margin-right: 10px
+            padding: 5px 0px
+            div.info
+                margin-bottom: 5px
+                button
+                    font-size: 12px
+                    z-index: 1000
+                    &:hover
+                        cursor: pointer
