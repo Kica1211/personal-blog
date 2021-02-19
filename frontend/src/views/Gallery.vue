@@ -1,5 +1,6 @@
 <template>
   <div class="gallery-wrapper">
+    Its gonna be styled soon
     <div class="singleImage" v-for="image in state.images" :key="image.pk">
       <div class="s-title">{{ image.title }}</div>
       <div class="s-image" v-bind:style="{ backgroundImage: `url(${image.image})fdsafd` }">

@@ -41,12 +41,12 @@ export default {
     const state = reactive({
       error: false,
       credentials: {
-        username: "1me123",
-        email: "mkica@wp.pl",
-        first_name: "Kacper",
-        last_name: "Koksuwa",
-        password: "Barcelona10",
-        password2: "Barcelona10",
+        username: "",
+        email: "",
+        first_name: "",
+        last_name: "",
+        password: "",
+        password2: "",
       },
     });
     async function signUp() {
