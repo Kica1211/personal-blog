@@ -1,9 +1,10 @@
 from django.urls import path
-from blogApi.views import PostViewSet, PostCreate, PostDetail, PostUpdate, PostDelete, ImagesList, UserDetail, PostLike, PostUnlike
+from blogApi.views import PostViewSet, PostCreate, PostDetail, PostUpdate, PostDelete, ImagesList, UserDetail, PostLike, PostUnlike, CommentCreate
 urlpatterns = [
     path('post-create/', PostCreate.as_view(), name="post-create"),
     path('posts-list/', PostViewSet.as_view(), name='posts-list'),
     path('post-detail/<int:pk>/', PostDetail.as_view(), name='post-detail'),
+    path('comment-create/', CommentCreate.as_view(), name="comment-create"),
     path('post-create/', PostCreate.as_view(), name="post-create"),
     path('post-update/<int:pk>/', PostUpdate.as_view(), name="post-update"),
     path('post-unlike/<int:pk>/', PostUnlike.as_view(), name="post-unlike"),

@@ -1,7 +1,7 @@
 <template>
   <div id="singlePostView-wrapper" v-if="Object.values(state.post).length">
     <PostContent :post="state.post" />
-    <Comments :comments="state.post.comments" />
+    <Comments :comments="state.post.comments" :pk="state.post.pk" @refreshPost="getPost" />
   </div>
 </template>
 <script>
@@ -31,6 +31,7 @@ export default {
     });
     return {
       state,
+      getPost,
     };
   },
 };

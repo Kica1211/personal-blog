@@ -1,32 +1,53 @@
 import { API_ADDRESS } from "../index";
 import axios from "axios";
+import { refreshToken, localStorageAuthentication } from "../../router/_guards";
 export const content_edit_module = {
   namespaced: true,
   actions: {
-    async likePost(_, post, flag) {
-      try {
-        const user = JSON.parse(localStorage.getItem("user"));
-        const data = {
-          title: post.title,
-        };
-        const options = {
-          headers: {
-            Authorization: `Bearer ${user.access}`,
-          },
-        };
-        if (flag) {
-          const feed = await axios.patch(`${API_ADDRESS}/api/post-like/${post.pk}/`, data, options);
-          console.log(feed);
-        } else {
-          const feed2 = await axios.patch(
-            `${API_ADDRESS}/api/post-unlike/${post.pk}/`,
-            data,
-            options
-          );
-          console.log(feed2);
+    async likePost(_, data) {
+      const isAuthorizated = (await refreshToken()) && localStorageAuthentication();
+      if (isAuthorizated) {
+        try {
+          const user = JSON.parse(localStorage.getItem("user"));
+          const options = {
+            headers: {
+              Authorization: `Bearer ${user.access}`,
+            },
+          };
+          if (data.flag) {
+            axios.patch(`${API_ADDRESS}/api/post-like/${data.pk}/`, {}, options);
+          } else {
+            axios.patch(`${API_ADDRESS}/api/post-unlike/${data.pk}/`, {}, options);
+          }
+        } catch {
+          console.log("error");
         }
-      } catch {
-        console.log("cos sie zjebalo xd");
+      } else {
+        localStorage.setItem("user", {});
+        location.reload();
+      }
+    },
+    async addComment(_, data) {
+      const isAuthorizated = (await refreshToken()) && localStorageAuthentication();
+      if (isAuthorizated) {
+        try {
+          const user = JSON.parse(localStorage.getItem("user"));
+          const options = {
+            headers: {
+              Authorization: `Bearer ${user.access}`,
+            },
+          };
+          const postData = {
+            content: data.content,
+            post: data.pk,
+          };
+          await axios.post(`${API_ADDRESS}/api/comment-create/`, postData, options);
+        } catch {
+          console.log("error");
+        }
+      } else {
+        localStorage.setItem("user", {});
+        location.reload();
       }
     },
   },

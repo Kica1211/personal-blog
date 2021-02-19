@@ -1,6 +1,7 @@
 import { API_ADDRESS } from "../index";
 import axios from "axios";
 import { refreshToken, localStorageAuthentication } from "../../router/_guards";
+
 export const auth_module = {
   namespaced: true,
   mutations: {},
@@ -30,7 +31,6 @@ export const auth_module = {
           username,
           password,
         });
-        console.log(`${API_ADDRESS}/api/user-detail/${username}/`);
         const { data: userDetail } = await axios.get(`${API_ADDRESS}/api/user-detail/${username}/`);
         const pk = userDetail[0].pk;
         const user = { username, pk, ...feedback };

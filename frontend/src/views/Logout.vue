@@ -1,9 +1,8 @@
 <template>
   <div class="logout-wrapper">
-    LOGOUT VIEW ES
-    <div>are you sure you wanna logout?</div>
-    <button v-on:click="logout">yes</button>
-    <button v-on:click="goBack">no</button>
+    <div class="logoutQuestion">Are you sure you wanna logout?</div>
+    <button v-on:click="logout" class="logoutButton">Yes</button>
+    <button v-on:click="goBack" class="logoutButton">No</button>
   </div>
 </template>
 <script>

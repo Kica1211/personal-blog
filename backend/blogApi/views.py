@@ -1,5 +1,5 @@
-from .serializers import PostSerializer, MyImageSerializer, PostCreateSerializer, UserSerializer, PostLikeSerializer, PostUnlikeSerializer
-from .models import Post, MyImage
+from .serializers import PostSerializer, MyImageSerializer, PostCreateSerializer, UserSerializer, PostLikeSerializer, PostUnlikeSerializer, CommentCreateSerializer
+from .models import Post, MyImage, Comment
 from rest_flex_fields.views import FlexFieldsMixin
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework import generics
@@ -24,6 +24,12 @@ class PostViewSet(FlexFieldsMixin, generics.ListAPIView):
 class PostCreate(generics.CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostCreateSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class CommentCreate(generics.CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentCreateSerializer
     permission_classes = [IsAuthenticated]
 
 

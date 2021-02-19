@@ -1,7 +1,7 @@
 <template>
   <section class="postContent">
     <div class="goBack" v-on:click="goBack">
-      <div class="arrow">es</div>
+      <div class="arrow">&#8920;</div>
     </div>
     <div class="author">
       {{ post.author.username }}
@@ -12,10 +12,6 @@
     </div>
     <div class="singlePostContent">
       {{ post.content }}
-    </div>
-    <div class="ratePost">
-      Did you like the post?
-      <button class="likePost">Like !</button>
     </div>
   </section>
 </template>

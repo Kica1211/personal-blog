@@ -1,17 +1,24 @@
 <template>
   <div class="authors-wrapper">
-    <div class="name">
-      Paweł Kica
+    <div class="titleAuthors">
+      Authors and developers
     </div>
-    <div class="description">
-      Hello me is Paweł
-    </div>
-    <div>
-      <div class="name">
-        Kacper Ksiazek (best yasuo eune)
+    <div class="singleAuthor">
+      <div class="name authorItem">
+        Paweł Kica
       </div>
-      <div class="description">
-        Hello me is Kacperro
+      <div class="description authorItem">
+        Hello me is Paweł
+      </div>
+    </div>
+    <div class="singleAuthor">
+      <div>
+        <div class="name authorItem">
+          Firstname Lastname
+        </div>
+        <div class="description authorItem">
+          Hello me is Firstname Lasstname
+        </div>
       </div>
     </div>
   </div>

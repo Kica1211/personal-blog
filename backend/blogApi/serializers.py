@@ -21,8 +21,20 @@ class UserSerializer(FlexFieldsModelSerializer):
 
 class LikedBySerializer(FlexFieldsModelSerializer):
     class Meta:
-        model = User
-        fields = ['username']
+        model = Post
+        fields = ['pk']
+
+
+class PostUnlikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['pk']
+
+    def update(self, instance, validated_data):
+        user = self.context['request'].user
+        instance.likedBy.remove(user.pk)
+        instance.save()
+        return instance
 
 
 class PostCreateSerializer(serializers.ModelSerializer):
@@ -53,18 +65,6 @@ class PostLikeSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         user = self.context['request'].user
         instance.likedBy.add(user.pk)
-        instance.save()
-        return instance
-
-
-class PostUnlikeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Post
-        fields = ['title', 'content', 'likedBy']
-
-    def update(self, instance, validated_data):
-        user = self.context['request'].user
-        instance.likedBy.remove(user.pk)
         instance.save()
         return instance
 
@@ -116,6 +116,18 @@ class CommentSerializer(FlexFieldsModelSerializer):
         read_only_fields = (
             'username',
         )
+
+
+class CommentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['content', 'post']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        comment = Comment.objects.create(
+            content=validated_data['content'], author=user, post=validated_data['post'])
+        return comment
 
 
 class MyImageSerializer(serializers.ModelSerializer):

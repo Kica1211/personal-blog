@@ -6,7 +6,7 @@
     </div>
     <div class="post-title">{{ post.title }}</div>
     <div class="post-content">
-      {{ addDots(post.content) }}
+      {{ post.content.length > 500 ? post.content.slice(0, 500) + "..." : post.content }}
       <span class="read-more" v-if="post.content.length > 500">Read more</span>
     </div>
   </router-link>
@@ -15,15 +15,20 @@
       <div class="info">
         {{ post.likedBy.length || 0 }} {{ post.likedBy.length == 1 ? "like" : "likes" }}
       </div>
-      <button v-on:click="likePost">
-        {{ post.likedBy.includes(user.pk) ? "Like" : "Unlike" }}
+      <button v-on:click="likePost" v-if="Object.keys(user).length !== 0 && user !== null">
+        Like
       </button>
     </div>
     <div class="rating-item">
       <div class="info">
         {{ post.comments.length || 0 }} {{ post.comments.length == 1 ? "comment" : "comments" }}
       </div>
-      <button>Comment</button>
+      <router-link
+        :to="{ path: `/singlePost/${post.pk}` }"
+        v-if="Object.keys(user).length !== 0 && user !== null"
+      >
+        <button>Comment</button>
+      </router-link>
     </div>
   </div>
 </template>
@@ -31,32 +36,35 @@
 import { useStore } from "vuex";
 export default {
   name: "HomeSinglePost",
+  emits: ["refreshPosts"],
   props: {
     post: Object,
+    user: Object,
   },
-  setup(props) {
-    const user = localStorage.getItem("user");
+  setup(props, { emit }) {
     const store = useStore();
     function formatDate(date) {
       const result = date.slice(0, 10);
       return result.slice(8, 10) + "-" + result.slice(5, 7) + "-" + result.slice(0, 4);
     }
-    function addDots(word) {
-      if (word.length > 500) {
-        return word.slice(0, 500) + "...";
-      } else {
-        return word;
-      }
-    }
-    function likePost() {
-      const flag = !props.post.likedBy.includes(user.pk);
-      store.dispatch("content_edit_module/likePost", props.post, flag);
+
+    async function likePost() {
+      let flag = true;
+      Object.values(props.post.likedBy).forEach((item) => {
+        if (item.pk === props.user.pk) {
+          flag = false;
+        }
+      });
+      const data = {
+        flag,
+        pk: props.post.pk,
+      };
+      await store.dispatch("content_edit_module/likePost", data);
+      emit("refreshPosts");
     }
     return {
-      addDots,
       formatDate,
       likePost,
-      user,
     };
   },
 };

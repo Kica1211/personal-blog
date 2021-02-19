@@ -39,6 +39,9 @@ class Comment(models.Model):
         User, on_delete=models.CASCADE, related_name='comments')
     likedBy = models.ManyToManyField(User, blank=True)
 
+    class Meta:
+        ordering = ['-created']
+
     def get_comment_likes(self):
         users = []
         for user in self.likedBy.all():

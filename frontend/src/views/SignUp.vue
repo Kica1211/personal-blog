@@ -28,7 +28,6 @@
       </div>
       <button class="signUp-button">Join to us!</button>
     </form>
-    <button v-on:click="test">dsadasdasds</button>
   </div>
 </template>
 <script>
@@ -58,13 +57,9 @@ export default {
         state.error = true;
       }
     }
-    function test() {
-      router.push({ name: "LogIn", params: { message: "Now you can log in" } });
-    }
     return {
       signUp,
       state,
-      test,
     };
   },
 };

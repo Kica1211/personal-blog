@@ -40,7 +40,12 @@ export const localStorageAuthentication = () => {
   try {
     const user = JSON.parse(localStorage.getItem("user"));
     let result = true;
-    [["username", 1], ["pk", 0][("access", 67)], ["refresh", 67]].forEach((property) => {
+    [
+      ["username", 1],
+      ["pk", 0],
+      ["access", 67],
+      ["refresh", 67],
+    ].forEach((property) => {
       if (user[property[0]].length < property[1]) {
         result = false;
       }
